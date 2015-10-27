@@ -43,7 +43,7 @@ input_statement <- paste('input\n', input_statement, '\n;\n', collapse='\n')
 if(!is.na(opt$output))
   sink(file=ofile, type='output')
 cat("data &dsn ;
-    infile &ifile DLM='|' DSD MISSOVER LRECL=")
+    infile &ifile DLM=&dlm DSD MISSOVER LRECL=")
 cat(sprintf('%d ', pmax(sum(d1$data_length)+10, 32767)))
 cat("FIRSTOBS=2 ;
 ")
