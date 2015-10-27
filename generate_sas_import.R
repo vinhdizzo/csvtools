@@ -31,7 +31,7 @@ d1 <- read.csv(ifile, sep=dlm)
 ## d1$variable <- str_replace(d1$variable, '[^a-zA-Z0-9_]', '_')
 d1$variable <- gsub(pattern='[^a-zA-Z0-9_]', replacement='_', x=d1$variable, perl=TRUE)
 informat_statement <- paste(d1$variable
-                          , ifelse(d1$data_type=='char', paste0('$', d1$data_length, '.'), paste0(pmin(d1$data_length, 32), '.'))
+                          , ifelse(d1$data_type=='char', paste0('$', pmax(d1$data_length, 1), '.'), paste0(pmin(d1$data_length, 32), '.'))
                           , sep=' ', collapse='\n')
 informat_statement <- paste('informat\n', informat_statement, '\n;\n', collapse='\n')
 
