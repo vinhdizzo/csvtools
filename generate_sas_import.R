@@ -18,12 +18,12 @@ if(is.na(opt$input)) {
   ifile <- file(opt$input)
 }
 open(ifile)
+
 if(is.na(opt$output)) {
-  ofile <- file('stdout')
+  ofile <- NA
 } else{
-  ofile <- file(opt$output)
+  ofile <- file(opt$output, open='w')
 }
-open(ofile)
 
 d1 <- read.csv(ifile, sep=dlm)
 
@@ -40,7 +40,8 @@ input_statement <- paste(d1$variable
                         , sep=' ', collapse='\n')
 input_statement <- paste('input\n', input_statement, '\n;\n', collapse='\n')
 
-sink(file=ofile, type='output')
+if(!is.na(opt$output))
+  sink(file=ofile, type='output')
 cat("data &dsn ;
     infile &ifile DLM='|' TERMSTR=CRLF DSD MISSOVER LRECL=")
 cat(sprintf('%d ', pmax(sum(d1$data_length)+10, 32767)))
@@ -49,4 +50,5 @@ cat("FIRSTOBS=2 ;
 cat(informat_statement)
 cat(input_statement)
 cat('run ;\n')
-sink()
+if(!is.na(opt$output))
+  sink()
